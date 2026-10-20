@@ -1,0 +1,345 @@
+# AI reading list — the single source of truth for the site.
+#
+# Add a new entry anywhere (order doesn't matter; the site sorts by `added`).
+# Only `title`, `url`, `type` and `added` are required.
+#
+#   - title: The title as published
+#     url: https://...
+#     type: paper | essay | news | interview | resource
+#     added: 2026-10-20            # date you added it to the list
+#     authors: Jane Doe, John Roe  # optional, free text
+#     published: 2026-02-10        # optional; a full date or just a year
+#     field: [astro]               # optional; ⭐ astro = written by someone in the astro/cosmo-sphere
+#     tags: [education, labour]    # optional; free-form topics, become filters on the site
+#     status: to-read              # optional; omit once read
+#     mine: true                   # optional; my own writing
+#     note: Short comment.         # optional
+
+- title: Slop-Machine Future
+  url: https://buttondown.com/dorian/archive/slop-machine-future/
+  type: essay
+  added: 2026-06-23
+  authors: Dorian Taylor
+
+- title: Against the Uncritical Adoption of 'AI' Technologies in Academia
+  url: https://zenodo.org/records/17065099
+  type: paper
+  added: 2026-06-23
+  authors: Olivia Guest et al.
+  published: 2025-09-05
+
+- title: What Does 'Human-Centred AI' Mean?
+  url: https://arxiv.org/abs/2507.19960
+  type: paper
+  added: 2026-06-23
+  authors: Olivia Guest
+  published: 2025-07-26
+
+- title: Why do we do astrophysics?
+  url: https://arxiv.org/abs/2602.10181
+  type: paper
+  added: 2026-06-23
+  authors: David W. Hogg
+  published: 2026-02-10
+  field: [astro]
+
+- title: The indiscriminate adoption of AI threatens the foundations of academia
+  url: https://arxiv.org/abs/2602.10165
+  type: paper
+  added: 2026-06-23
+  authors: Roberto Trotta
+  published: 2026-02-10
+  field: [astro]
+
+- title: Large language models are not the problem
+  url: https://arxiv.org/abs/2604.22071
+  type: paper
+  added: 2026-06-23
+  authors: Hiranya V. Peiris
+  published: 2026-04-23
+  field: [astro]
+
+- title: "On Explicit Utility Functions in Physics: Compute for Compute, Physics for Understanding"
+  url: https://thejunaverse.substack.com/p/on-explicit-utility-functions-in
+  type: essay
+  added: 2026-06-23
+  authors: Juna Kollmeier
+  field: [astro]
+
+- title: Evolving Dark Energy and AI
+  url: https://scottdodelson.substack.com/p/evolving-dark-energy-and-ai
+  type: essay
+  added: 2026-06-23
+  authors: Scott Dodelson
+  field: [astro]
+
+- title: The machines are fine. I'm worried about us.
+  url: https://ergosphere.blog/posts/the-machines-are-fine/
+  type: essay
+  added: 2026-06-23
+  authors: Minas Karamanis
+  field: [astro]
+
+- title: AI can help scientists publish less
+  url: https://arxiv.org/abs/2606.13829
+  type: paper
+  added: 2026-06-23
+  authors: Gianfranco Bertone
+  published: 2026-06-11
+  field: [astro]
+
+- title: "Exclusive: OpenAI Used Kenyan Workers on Less Than $2 Per Hour to Make ChatGPT Less Toxic"
+  url: https://time.com/6247678/openai-chatgpt-kenya-workers/
+  type: news
+  added: 2026-06-23
+  authors: Billy Perrigo
+  published: 2023
+
+- title: "Humans in the AI loop: the data labelers behind some of the most powerful LLMs' training datasets"
+  url: https://privacyinternational.org/explainer/5357/humans-ai-loop-data-labelers-behind-some-most-powerful-llms-training-datasets
+  type: resource
+  added: 2026-06-23
+  authors: Privacy International
+
+- title: "A Five-Stage Framework for Slitless Grism Spectra: Demonstrated on Euclid Q1 Strong-Lens Candidates and Ported to CEERS NIRCam"
+  url: https://arxiv.org/abs/2604.02726
+  type: paper
+  added: 2026-06-23
+  authors: R. Tata
+  published: 2026-04-03
+  field: [astro]
+
+- title: "‘There’s this deep mystery of what, actually, is this thing?’: the philosopher inside Google DeepMind"
+  url: https://www.theguardian.com/news/ng-interactive/2026/jun/30/theres-this-deep-mystery-of-what-actually-is-this-thing-the-philosopher-inside-google-deepmind
+  type: news
+  added: 2026-06-30
+  authors: The Guardian
+  published: 2026-06-30
+
+- title: "‘Have I been influenced, or is this actually me?’ How personal taste fell out of fashion"
+  url: https://www.theguardian.com/media/2026/jun/14/have-i-been-influenced-personal-taste-out-of-fashion-algorithm
+  type: news
+  added: 2026-06-30
+  authors: The Guardian
+  published: 2026-06-14
+
+- title: "‘Why would you put a toxic product into the hands of a young child?’: Beeban Kidron on why big tech needs its ‘tobacco moment’"
+  url: https://www.theguardian.com/film/2026/jun/13/beeban-kidron-interview-baroness-big-tech-online-child-abuse
+  type: interview
+  added: 2026-06-30
+  authors: The Guardian
+  published: 2026-06-13
+
+- title: Essay Writing as Personal Sovereignty
+  url: https://blog.cosmos-institute.org/p/essay-writing-as-personal-sovereignty
+  type: essay
+  added: 2026-07-01
+  authors: Michael Dean
+
+- title: Hey GPT, can you help me understand the Universe?
+  url: https://www.nature.com/articles/s41550-025-02497-8
+  type: paper
+  added: 2026-07-10
+  authors: Giacomo Beccari, Henri M. J. Boffin
+  published: 2025-02-28
+  field: [astro]
+
+- title: What understanding means in AI-laden astronomy
+  url: https://www.nature.com/articles/s41550-026-02809-6
+  type: paper
+  added: 2026-07-10
+  authors: Yuan-Sen Ting, André Curtis-Trudel, Siyu Yao
+  published: 2026-03-11
+  field: [astro]
+
+- title: AI Mania Is Eviscerating Global Decisionmaking
+  url: https://hermit-tech.com/blog/ai-mania-is-eviscerating-global-decisionmaking
+  type: essay
+  added: 2026-07-20
+
+- title: AI 2027
+  url: https://ai-2027.com/
+  type: resource
+  added: 2026-07-20
+  authors: Daniel Kokotajlo et al.
+
+- title: "AI 2040: Plan A"
+  url: https://ai-2040.com/
+  type: resource
+  added: 2026-07-20
+
+- title: Leiden Declaration on Artificial Intelligence and Mathematics
+  url: https://zenodo.org/records/20302944
+  type: resource
+  added: 2026-07-30
+  authors: Jarod Alper et al.
+  published: 2026-06-02
+
+- title: "AI: Considerations for people who make decisions"
+  url: https://berthub.eu/articles/posts/ai-for-decision-makers/
+  type: essay
+  added: 2026-08-01
+  authors: Bert Hubert
+
+- title: The crisis of AI-generated mathematics
+  url: https://arxiv.org/abs/2608.02859
+  type: paper
+  added: 2026-08-27
+  authors: Max Weinreich
+  published: 2026-08-03
+
+- title: An Inverse Lyth Bound for Non-Attractor Inflation
+  url: https://arxiv.org/abs/2608.25911
+  type: paper
+  added: 2026-09-04
+  authors: William H. Kinney
+  published: 2026-08-26
+  field: [astro]
+  note: Will Kinney does an entire paper with ChatGPT.
+
+- title: ux-phi experiments
+  url: https://www.ux-phi.com/experiments
+  type: resource
+  added: 2026-09-07
+
+- title: Who is responsible when AI helps to write science?
+  url: https://www.nature.com/articles/d41586-026-02686-z
+  type: essay
+  added: 2026-09-07
+  authors: Robert Braun
+  published: 2026-09-01
+  status: to-read
+
+- title: "Bland new world: is AI making us all think the same?"
+  url: https://www.nature.com/articles/d41586-026-02682-3
+  type: news
+  added: 2026-09-07
+  authors: Matthew Hutson
+  published: 2026-09-01
+  status: to-read
+
+- title: Sycophantic AI Decreases Prosocial Intentions and Promotes Dependence
+  url: https://arxiv.org/abs/2510.01395
+  type: paper
+  added: 2026-09-07
+  authors: Myra Cheng et al.
+  published: 2025-10-01
+  status: to-read
+
+- title: A critical lecture lens for students in the GenAI era
+  url: https://drpontus.medium.com/a-critical-lecture-lens-for-students-in-the-genai-era-1b425163649b
+  type: essay
+  added: 2026-09-07
+  status: to-read
+  note: Instilling critical thinking in undergrads under lecture.
+
+- title: Artificial intelligence and illusions of understanding in scientific research
+  url: https://www.nature.com/articles/s41586-024-07146-0
+  type: paper
+  added: 2026-09-07
+  authors: Lisa Messeri, M. J. Crockett
+  published: 2024-03-06
+  status: to-read
+
+- title: Is machine learning good or bad for the natural sciences?
+  url: https://arxiv.org/abs/2405.18095
+  type: paper
+  added: 2026-09-07
+  authors: David W. Hogg, Soledad Villar
+  published: 2024-05-28
+  field: [astro]
+  status: to-read
+  note: David Hogg at it again.
+
+- title: "How to train your slop cannon: a short guide to using large language models for research in the natural sciences"
+  url: https://github.com/Open-Science-Ledger/how-to-train-your-slop-cannon
+  type: resource
+  added: 2026-09-07
+  authors: Loader, Oppenheim, Osborne
+  status: to-read
+
+- title: Astrophysics in the Era of Artificial Intelligence powered by Large Language Models
+  url: https://arxiv.org/abs/2609.13301
+  type: paper
+  added: 2026-09-16
+  authors: A. R. Rao
+  published: 2026-09-10
+  field: [astro]
+  note: Terrible take which misses David’s point entirely; very utilitarian.
+
+- title: OpenAI breakthrough triggers existential crisis in math
+  url: https://www.science.org/content/article/openai-breakthrough-triggers-existential-crisis-math
+  type: news
+  added: 2026-09-18
+  authors: Science
+
+- title: The epistemic debt of generative AI
+  url: https://www.nature.com/articles/s42256-026-01294-w
+  type: paper
+  added: 2026-09-18
+  authors: Irene Unceta, Paula Subías-Beltrán, Oriol Pujol
+  published: 2026-08-26
+  status: to-read
+
+- title: A sibling to LLMs can’t jump
+  url: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4737265
+  type: paper
+  added: 2026-09-21
+  status: to-read
+
+- title: Large Language Models Write Answers
+  url: https://compstudiesjournal.com/wp-content/uploads/2023/06/vee.pdf
+  type: paper
+  added: 2026-10-01
+  authors: Annette Vee
+  published: 2023
+
+- title: Against the Suspicion of Machines
+  url: https://voelkerrechtsblog.org/against-the-suspicion-of-machines/
+  type: essay
+  added: 2026-10-18
+  authors: Jean d’Aspremont
+  note: Very very excellent.
+
+- title: Agentic research is oxymoronic
+  url: https://arxiv.org/abs/2608.31161
+  type: paper
+  added: 2026-10-18
+  authors: Natalie B. Hogg
+  published: 2026-08-31
+  field: [astro]
+  mine: true
+
+- title: But is it fun?
+  url: https://nataliebhogg.com/2026/05/17/but-is-it-fun/
+  type: essay
+  added: 2026-10-18
+  authors: Natalie B. Hogg
+  published: 2026-05-17
+  field: [astro]
+  mine: true
+
+- title: Find the stable and pull out the bolt
+  url: https://nataliebhogg.com/2026/03/09/find-the-stable-and-pull-out-the-bolt/
+  type: essay
+  added: 2026-10-18
+  authors: Natalie B. Hogg
+  published: 2026-03-09
+  field: [astro]
+  mine: true
+
+- title: Claiming the right to be unhappy
+  url: https://nataliebhogg.com/2024/01/15/claiming-the-right-to-be-unhappy/
+  type: essay
+  added: 2026-10-18
+  authors: Natalie B. Hogg
+  published: 2024-01-15
+  field: [astro]
+  mine: true
+
+- title: "Michael I. Jordan on AI: “Superintelligence is science fiction”"
+  url: https://www.di.ens.fr/~fbach/MJordan_ITW_Liberation_English.html
+  type: interview
+  added: 2026-10-19
+  authors: Michael I. Jordan
+  note: Nicely measured social perspective.

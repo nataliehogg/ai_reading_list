@@ -1,1 +1,1 @@
-# ai_reading_list
+# AI Reading List

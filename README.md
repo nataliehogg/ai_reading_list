@@ -10,6 +10,10 @@ Everything lives in [`data/readings.yaml`](data/readings.yaml). Add an entry (th
 
 You can do this straight from the GitHub website: open the file, click the pencil icon, add your entry and commit.
 
+Tags are free-form: `field` is the authors' field of origin, `tags` are themes, and `start_here: true` marks an essential pick. Every tag is clickable on the site.
+
+Things not yet read go in [`data/to-read.yaml`](data/to-read.yaml) (same format). The build checks it but doesn't publish it; once read, move the entry into `readings.yaml`.
+
 If an entry has a mistake (a missing field, a typo in a field name, a duplicate link), the build fails with a message saying which entry and why, and the live site stays as it was.
 
 ## Previewing locally
@@ -22,7 +26,7 @@ python -m http.server -d _site    # then open http://localhost:8000
 
 ## What gets built
 
-- `index.html` — the full list, rendered in the HTML so it works without JavaScript and is readable by search engines; a small script adds search, filters and sorting. Filtered views are shareable links, e.g. [`?origin=astro`](https://reading.nataliebhogg.com/?origin=astro).
+- `index.html` — the full list, rendered in the HTML so it works without JavaScript and is readable by search engines; a small script adds search, tag filtering and sorting. Filtered views are shareable links, e.g. [`?tag=labour`](https://reading.nataliebhogg.com/?tag=labour).
 - `feed.xml` — an Atom feed of new additions.
 - `readings.json` — the whole list as data.
 

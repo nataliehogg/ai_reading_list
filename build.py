@@ -2,6 +2,8 @@
 
     python build.py                      # validate and build
     python -m http.server -d _site       # preview at http://localhost:8000
+
+data/to-read.yaml is validated too, but never published.
 """
 
 import datetime as dt
@@ -11,13 +13,14 @@ import json
 import shutil
 import sys
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlencode, urlparse
 from xml.sax.saxutils import escape as xml_escape
 
 import yaml
 
 ROOT = Path(__file__).parent
 DATA = ROOT / "data" / "readings.yaml"
+TO_READ = ROOT / "data" / "to-read.yaml"
 TEMPLATE = ROOT / "templates" / "index.html"
 STATIC = ROOT / "static"
 OUT = ROOT / "_site"
@@ -25,18 +28,10 @@ OUT = ROOT / "_site"
 SITE_URL = "https://reading.nataliebhogg.com/"
 REPO_URL = "https://github.com/nataliehogg/ai_reading_list"
 
-TYPES = {
-    "paper": "Paper",
-    "essay": "Essay",
-    "news": "News",
-    "interview": "Interview",
-    "resource": "Resource",
-}
-FIELDS = {"astro": "Astro/cosmo"}  # labels for `field` values; others are title-cased
-STATUSES = {"read": "Read", "to-read": "To read"}
+TYPES = ("paper", "essay", "news", "interview", "resource")
 
 REQUIRED = {"title", "url", "type", "added"}
-OPTIONAL = {"authors", "published", "field", "tags", "status", "mine", "note"}
+OPTIONAL = {"authors", "sort_as", "published", "field", "tags", "start_here", "note"}
 
 
 # --- loading and validation -------------------------------------------------
@@ -47,8 +42,8 @@ def as_list(value):
     return [value] if isinstance(value, str) else value
 
 
-def load():
-    raw = yaml.safe_load(DATA.read_text(encoding="utf-8")) or []
+def load(path):
+    raw = yaml.safe_load(path.read_text(encoding="utf-8")) or []
     errors, entries, seen = [], [], {}
 
     for i, e in enumerate(raw, 1):
@@ -85,14 +80,10 @@ def load():
 
         field, tags = as_list(e.get("field")), as_list(e.get("tags"))
         for name, values in (("field", field), ("tags", tags)):
-            if not all(isinstance(v, str) for v in values):
-                errors.append(f"{where}: `{name}` must be a list of words")
-
-        status = e.get("status") or "read"
-        if status not in STATUSES:
-            errors.append(f"{where}: `status` must be one of {', '.join(STATUSES)}")
-        if not isinstance(e.get("mine", False), bool):
-            errors.append(f"{where}: `mine` must be true or false")
+            if not all(isinstance(v, str) and v.strip() and "|" not in v for v in values):
+                errors.append(f"{where}: `{name}` must be a list of words (no `|`)")
+        if not isinstance(e.get("start_here", False), bool):
+            errors.append(f"{where}: `start_here` must be true or false")
 
         entries.append({
             "title": str(e["title"]).strip(),
@@ -102,16 +93,16 @@ def load():
             "authors": str(e.get("authors") or "").strip(),
             "published": published,
             "year": published.year if isinstance(published, dt.date) else published,
-            "field": [str(v).lower() for v in field],
-            "tags": [str(v).lower() for v in tags],
-            "status": status,
-            "mine": bool(e.get("mine", False)),
+            "sort_as": str(e.get("sort_as") or "").strip(),
+            "field": [str(v).strip() for v in field],
+            "tags": [str(v).strip() for v in tags],
+            "start_here": bool(e.get("start_here", False)),
             "note": str(e.get("note") or "").strip(),
             "domain": parsed.netloc.removeprefix("www."),
         })
 
     if errors:
-        print(f"{DATA.relative_to(ROOT)} has {len(errors)} problem(s):", file=sys.stderr)
+        print(f"{path.relative_to(ROOT)} has {len(errors)} problem(s):", file=sys.stderr)
         for err in errors:
             print(f"  - {err}", file=sys.stderr)
         sys.exit(1)
@@ -128,111 +119,87 @@ def fmt_date(d):
     return f"{d.day} {d:%b %Y}"
 
 
-def label(facet, value):
-    if facet == "type":
-        return TYPES[value]
-    if facet == "status":
-        return STATUSES[value]
-    if facet == "origin":
-        return "Me" if value == "me" else FIELDS.get(value, value.title())
-    return value
+def sort_key(e):
+    """First author's surname (or `sort_as`), then title; entries without authors go last."""
+    title = e["title"].lstrip("‘’'\"“”").lower()
+    name = e["sort_as"] or e["authors"].split(",")[0].removesuffix("et al.").strip()
+    if not name:
+        return (1, "", title)
+    surname = name if e["sort_as"] else name.split()[-1]
+    return (0, surname.lower().removeprefix("d’").removeprefix("d'"), title)
 
 
-def origins(e):
-    return e["field"] + (["me"] if e["mine"] else [])
-
-
-def sort_title(title):
-    return title.lstrip("‘’'\"“”").lower()
+def filter_link(kind, value, text, cls="", title=""):
+    """A link that filters the list; works as a plain shareable URL too."""
+    attrs = f' class="{cls}"' if cls else ""
+    attrs += f' title="{esc(title)}"' if title else ""
+    return (f'<a href="?{esc(urlencode({kind: value}))}" data-kind="{kind}" '
+            f'data-value="{esc(value)}"{attrs}>{esc(text)}</a>')
 
 
 def render_item(e):
-    pills = []
-    if e["mine"]:
-        pills.append('<span class="pill pill-mine">By me</span>')
-    if e["status"] == "to-read":
-        pills.append('<span class="pill pill-todo">To read</span>')
-    for f in e["field"]:
-        if f != "astro":
-            pills.append(f'<span class="pill">{esc(label("origin", f))}</span>')
-
-    star = ""
-    if "astro" in e["field"]:
-        star = ('<span class="star" title="Written by someone in the astro/cosmo-sphere" '
-                'aria-label="Astro/cosmo author">★</span>')
+    meta = filter_link("type", e["type"], e["type"], "meta-link")
 
     byline = [f'<span class="authors">{esc(e["authors"])}</span>'] if e["authors"] else []
     if e["year"]:
         byline.append(f'<span>{e["year"]}</span>')
     byline.append(f'<span class="domain">{esc(e["domain"])}</span>')
 
-    note = f'<p class="note">{esc(e["note"])}</p>' if e["note"] else ""
-    tags = ""
-    if e["tags"]:
-        tags = '<ul class="tags">' + "".join(f"<li>{esc(t)}</li>" for t in e["tags"]) + "</ul>"
+    tags = []
+    if e["start_here"]:
+        tags.append(filter_link("start", "yes", "start here", "tag tag-start"))
+    tags += [filter_link("field", f, f, "tag tag-field", "Field of origin") for f in e["field"]]
+    tags += [filter_link("tag", t, t, "tag") for t in e["tags"]]
 
-    published = e["published"]
-    published_key = published.isoformat() if isinstance(published, dt.date) else (f"{published}-00-00" if published else "")
+    sep = ' <span class="sep" aria-hidden="true">·</span> '
+    note = f'\n  <p class="note">{esc(e["note"])}</p>' if e["note"] else ""
+    tag_line = f'\n  <p class="tags">{sep.join(tags)}</p>' if tags else ""
 
-    return f"""
-<li class="item" data-type="{e['type']}" data-origin="{esc(' '.join(origins(e)))}" data-status="{e['status']}" data-tags="{esc(' '.join(e['tags']))}" data-added="{e['added'].isoformat()}" data-published="{published_key}" data-sort-title="{esc(sort_title(e['title']))}">
-  <div class="item-side">
-    <span class="type">{TYPES[e['type']]}</span>
-    <time datetime="{e['added'].isoformat()}" title="Date added to the list">{fmt_date(e['added'])}</time>
-    {''.join(pills)}
-  </div>
-  <div class="item-main">
-    <h2 class="item-title"><a href="{esc(e['url'])}">{esc(e['title'])}</a>{star}</h2>
-    <p class="byline">{' <span class="sep" aria-hidden="true">·</span> '.join(byline)}</p>
-    {note}{tags}
-  </div>
-</li>""".strip()
+    data = {
+        "type": e["type"],
+        "field": "|".join(e["field"]),
+        "tag": "|".join(e["tags"]),
+        "start": "yes" if e["start_here"] else "",
+    }
+    data_attrs = " ".join(f'data-{k}="{esc(v)}"' for k, v in data.items())
+
+    return f"""<li class="item" {data_attrs}>
+  <p class="meta">{meta}</p>
+  <h2 class="item-title"><a href="{esc(e['url'])}">{esc(e['title'])}</a></h2>
+  <p class="byline">{sep.join(byline)}</p>{note}{tag_line}
+</li>"""
 
 
-def render_facets(entries):
-    def counts(key):
-        out = {}
-        for e in entries:
-            values = [e[key]] if key in ("type", "status") else (origins(e) if key == "origin" else e[key])
-            for v in values:
-                out[v] = out.get(v, 0) + 1
-        return out
+def render_tag_index(entries):
+    def counted(kind, values):
+        counts = {}
+        for v in values:
+            counts[v] = counts.get(v, 0) + 1
+        links = [filter_link(kind, v, v, "tag" + (" tag-field" if kind == "field" else ""))
+                 + f'<span class="n">{n}</span>'
+                 for v, n in sorted(counts.items(), key=lambda kv: kv[0].lower())]
+        return " ".join(f'<span class="index-entry">{link}</span>' for link in links)
 
     groups = [
-        ("type", "Type", [t for t in TYPES if t in counts("type")]),
-        ("origin", "Written by", sorted(counts("origin"), key=lambda v: (v == "me", v))),
-        ("status", "Status", [s for s in STATUSES if s in counts("status")]),
-        ("tags", "Topic", sorted(counts("tags"))),
+        ("Field of origin", counted("field", [f for e in entries for f in e["field"]])),
+        ("Themes", counted("tag", [t for e in entries for t in e["tags"]])),
+        ("Type", counted("type", [e["type"] for e in entries])),
     ]
-    html_groups = []
-    for key, title, values in groups:
-        if not values:
-            continue
-        n = counts(key)
-        chips = "".join(
-            f'<button type="button" class="chip" data-value="{esc(v)}" aria-pressed="false">'
-            f'{"<span class=star aria-hidden=true>★</span>" if v == "astro" else ""}'
-            f'{esc(label(key, v))}<span class="n">{n[v]}</span></button>'
-            for v in values
-        )
-        html_groups.append(
-            f'<div class="facet" data-facet="{key}" role="group" aria-label="{title}">'
-            f'<span class="facet-label">{title}</span><div class="chips">{chips}</div></div>'
-        )
-    return "\n".join(html_groups)
+    return "\n".join(f'<div class="index-group"><h3>{title}</h3><p>{body}</p></div>' for title, body in groups if body)
 
 
 def render_feed(entries, updated):
     latest = sorted(entries, key=lambda e: (e["added"], e["title"]), reverse=True)[:40]
     items = []
     for e in latest:
-        summary = " · ".join(filter(None, [TYPES[e["type"]], e["authors"], e["note"]]))
+        summary = " · ".join(filter(None, [e["type"], e["authors"], e["note"]]))
+        categories = "".join(f'\n    <category term="{xml_escape(t)}"/>' for t in e["field"] + e["tags"])
         items.append(f"""  <entry>
     <title>{xml_escape(e['title'])}</title>
     <link href="{xml_escape(e['url'])}"/>
     <id>{xml_escape(e['url'])}</id>
     <updated>{e['added'].isoformat()}T00:00:00Z</updated>
-    <summary>{xml_escape(summary)}</summary>
+    <summary>{xml_escape(summary)}</summary>{categories}
   </entry>""")
     return f"""<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -253,8 +220,14 @@ def asset_version(path):
 
 
 def build():
-    entries = load()
-    entries.sort(key=lambda e: (e["added"], e["title"]), reverse=True)
+    entries = load(DATA)
+    if TO_READ.exists():
+        to_read = load(TO_READ)
+        overlap = {e["url"] for e in entries} & {e["url"] for e in to_read}
+        if overlap:
+            sys.exit("In both readings.yaml and to-read.yaml (remove from to-read):\n  " + "\n  ".join(sorted(overlap)))
+
+    entries.sort(key=sort_key)
     updated = max(e["added"] for e in entries)
 
     if OUT.exists():
@@ -264,10 +237,9 @@ def build():
     page = TEMPLATE.read_text(encoding="utf-8")
     values = {
         "count": str(len(entries)),
-        "facets": render_facets(entries),
         "items": "\n".join(render_item(e) for e in entries),
+        "tag_index": render_tag_index(entries),
         "updated": fmt_date(updated),
-        "updated_iso": updated.isoformat(),
         "site_url": SITE_URL,
         "repo_url": REPO_URL,
         "css_v": asset_version(STATIC / "style.css"),
@@ -280,7 +252,7 @@ def build():
     (OUT / "index.html").write_text(page, encoding="utf-8")
 
     def jsonable(e):
-        out = {k: v for k, v in e.items() if k not in ("year", "domain")}
+        out = {k: v for k, v in e.items() if k not in ("year", "domain", "sort_as")}
         out["added"] = e["added"].isoformat()
         if isinstance(e["published"], dt.date):
             out["published"] = e["published"].isoformat()

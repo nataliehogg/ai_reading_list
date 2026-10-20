@@ -1,0 +1,110 @@
+# Not yet read. Same format as readings.yaml; checked by the build but not
+# published. Once read, move the entry into readings.yaml (and add tags).
+
+- title: Who is responsible when AI helps to write science?
+  url: https://www.nature.com/articles/d41586-026-02686-z
+  type: essay
+  added: 2026-09-07
+  authors: Robert Braun
+  sort_as:
+  published: 2026-09-01
+  field: []
+  tags: []
+  start_here: false
+  note:
+
+- title: 'Bland new world: is AI making us all think the same?'
+  url: https://www.nature.com/articles/d41586-026-02682-3
+  type: news
+  added: 2026-09-07
+  authors: Matthew Hutson
+  sort_as:
+  published: 2026-09-01
+  field: []
+  tags: []
+  start_here: false
+  note:
+
+- title: Sycophantic AI Decreases Prosocial Intentions and Promotes Dependence
+  url: https://arxiv.org/abs/2510.01395
+  type: paper
+  added: 2026-09-07
+  authors: Myra Cheng et al.
+  sort_as:
+  published: 2025-10-01
+  field: []
+  tags: []
+  start_here: false
+  note:
+
+- title: A critical lecture lens for students in the GenAI era
+  url: https://drpontus.medium.com/a-critical-lecture-lens-for-students-in-the-genai-era-1b425163649b
+  type: essay
+  added: 2026-09-07
+  authors:
+  sort_as:
+  published:
+  field: []
+  tags: []
+  start_here: false
+  note: Instilling critical thinking in undergrads under lecture.
+
+- title: Artificial intelligence and illusions of understanding in scientific research
+  url: https://www.nature.com/articles/s41586-024-07146-0
+  type: paper
+  added: 2026-09-07
+  authors: Lisa Messeri, M. J. Crockett
+  sort_as:
+  published: 2024-03-06
+  field: []
+  tags: []
+  start_here: false
+  note:
+
+- title: Is machine learning good or bad for the natural sciences?
+  url: https://arxiv.org/abs/2405.18095
+  type: paper
+  added: 2026-09-07
+  authors: David W. Hogg, Soledad Villar
+  sort_as:
+  published: 2024-05-28
+  field: [astro/cosmo]
+  tags: []
+  start_here: false
+  note: David Hogg at it again.
+
+- title: 'How to train your slop cannon: a short guide to using large language models for research in the natural sciences'
+  url: https://github.com/Open-Science-Ledger/how-to-train-your-slop-cannon
+  type: resource
+  added: 2026-09-07
+  authors: Loader, Oppenheim, Osborne
+  sort_as:
+  published:
+  field: []
+  tags: []
+  start_here: false
+  note:
+
+- title: The epistemic debt of generative AI
+  url: https://www.nature.com/articles/s42256-026-01294-w
+  type: paper
+  added: 2026-09-18
+  authors: Irene Unceta, Paula Subías-Beltrán, Oriol Pujol
+  sort_as:
+  published: 2026-08-26
+  field: []
+  tags: []
+  start_here: false
+  note:
+
+- title: A sibling to LLMs can’t jump
+  url: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4737265
+  type: paper
+  added: 2026-09-21
+  authors:
+  sort_as:
+  published:
+  field: []
+  tags: []
+  start_here: false
+  note:

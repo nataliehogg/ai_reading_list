@@ -3,7 +3,7 @@
 // Every tag is a link like ?tag=labour; clicking one adds it to the active
 // filters (all must match), and the current view is kept in the URL.
 (() => {
-  const KINDS = ["type", "field", "tag", "start"];
+  const KINDS = ["type", "tag", "start"];
   const LABELS = { start: { yes: "start here" } };
 
   const list = document.getElementById("list");

@@ -8,7 +8,6 @@
   authors: Robert Braun
   sort_as:
   published: 2026-09-01
-  field: []
   tags: []
   start_here: false
   note:
@@ -20,7 +19,6 @@
   authors: Matthew Hutson
   sort_as:
   published: 2026-09-01
-  field: []
   tags: []
   start_here: false
   note:
@@ -32,7 +30,6 @@
   authors: Myra Cheng et al.
   sort_as:
   published: 2025-10-01
-  field: []
   tags: []
   start_here: false
   note:
@@ -44,7 +41,6 @@
   authors:
   sort_as:
   published:
-  field: []
   tags: []
   start_here: false
   note: Instilling critical thinking in undergrads under lecture.
@@ -56,7 +52,6 @@
   authors: Lisa Messeri, M. J. Crockett
   sort_as:
   published: 2024-03-06
-  field: []
   tags: []
   start_here: false
   note:
@@ -68,8 +63,7 @@
   authors: David W. Hogg, Soledad Villar
   sort_as:
   published: 2024-05-28
-  field: [astro/cosmo]
-  tags: []
+  tags: [astro/cosmo]
   start_here: false
   note: David Hogg at it again.
 
@@ -80,7 +74,6 @@
   authors: Loader, Oppenheim, Osborne
   sort_as:
   published:
-  field: []
   tags: []
   start_here: false
   note:
@@ -92,7 +85,6 @@
   authors: Irene Unceta, Paula Subías-Beltrán, Oriol Pujol
   sort_as:
   published: 2026-08-26
-  field: []
   tags: []
   start_here: false
   note:
@@ -104,7 +96,6 @@
   authors:
   sort_as:
   published:
-  field: []
   tags: []
   start_here: false
   note:

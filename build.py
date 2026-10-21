@@ -31,7 +31,7 @@ REPO_URL = "https://github.com/nataliehogg/ai_reading_list"
 TYPES = ("paper", "essay", "news", "interview", "resource")
 
 REQUIRED = {"title", "url", "type", "added"}
-OPTIONAL = {"authors", "sort_as", "published", "field", "tags", "start_here", "note"}
+OPTIONAL = {"authors", "sort_as", "published", "tags", "start_here", "note"}
 
 
 # --- loading and validation -------------------------------------------------
@@ -78,10 +78,9 @@ def load(path):
         ):
             errors.append(f"{where}: `published` must be a date or a year")
 
-        field, tags = as_list(e.get("field")), as_list(e.get("tags"))
-        for name, values in (("field", field), ("tags", tags)):
-            if not all(isinstance(v, str) and v.strip() and "|" not in v for v in values):
-                errors.append(f"{where}: `{name}` must be a list of words (no `|`)")
+        tags = as_list(e.get("tags"))
+        if not all(isinstance(v, str) and v.strip() and "|" not in v for v in tags):
+            errors.append(f"{where}: `tags` must be a list of words (no `|`)")
         if not isinstance(e.get("start_here", False), bool):
             errors.append(f"{where}: `start_here` must be true or false")
 
@@ -94,7 +93,6 @@ def load(path):
             "published": published,
             "year": published.year if isinstance(published, dt.date) else published,
             "sort_as": str(e.get("sort_as") or "").strip(),
-            "field": [str(v).strip() for v in field],
             "tags": [str(v).strip() for v in tags],
             "start_here": bool(e.get("start_here", False)),
             "note": str(e.get("note") or "").strip(),
@@ -148,7 +146,6 @@ def render_item(e):
     tags = []
     if e["start_here"]:
         tags.append(filter_link("start", "yes", "start here", "tag tag-start"))
-    tags += [filter_link("field", f, f, "tag tag-field", "Field of origin") for f in e["field"]]
     tags += [filter_link("tag", t, t, "tag") for t in e["tags"]]
 
     sep = ' <span class="sep" aria-hidden="true">·</span> '
@@ -157,7 +154,6 @@ def render_item(e):
 
     data = {
         "type": e["type"],
-        "field": "|".join(e["field"]),
         "tag": "|".join(e["tags"]),
         "start": "yes" if e["start_here"] else "",
     }
@@ -175,14 +171,13 @@ def render_tag_index(entries):
         counts = {}
         for v in values:
             counts[v] = counts.get(v, 0) + 1
-        links = [filter_link(kind, v, v, "tag" + (" tag-field" if kind == "field" else ""))
+        links = [filter_link(kind, v, v, "tag")
                  + f'<span class="n">{n}</span>'
                  for v, n in sorted(counts.items(), key=lambda kv: kv[0].lower())]
         return " ".join(f'<span class="index-entry">{link}</span>' for link in links)
 
     groups = [
-        ("Field of origin", counted("field", [f for e in entries for f in e["field"]])),
-        ("Themes", counted("tag", [t for e in entries for t in e["tags"]])),
+        ("Tags", counted("tag", [t for e in entries for t in e["tags"]])),
         ("Type", counted("type", [e["type"] for e in entries])),
     ]
     return "\n".join(f'<div class="index-group"><h3>{title}</h3><p>{body}</p></div>' for title, body in groups if body)
@@ -193,7 +188,7 @@ def render_feed(entries, updated):
     items = []
     for e in latest:
         summary = " · ".join(filter(None, [e["type"], e["authors"], e["note"]]))
-        categories = "".join(f'\n    <category term="{xml_escape(t)}"/>' for t in e["field"] + e["tags"])
+        categories = "".join(f'\n    <category term="{xml_escape(t)}"/>' for t in e["tags"])
         items.append(f"""  <entry>
     <title>{xml_escape(e['title'])}</title>
     <link href="{xml_escape(e['url'])}"/>

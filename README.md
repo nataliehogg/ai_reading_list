@@ -10,7 +10,7 @@ Everything lives in [`data/readings.yaml`](data/readings.yaml). Add an entry (th
 
 You can do this straight from the GitHub website: open the file, click the pencil icon, add your entry and commit.
 
-Tags are free-form: `field` is the authors' field of origin, `tags` are themes, and `start_here: true` marks an essential pick. Every tag is clickable on the site.
+Tags are free-form: put anything in `tags` (field of origin, themes, …), and `start_here: true` marks an essential pick. Every tag is clickable on the site.
 
 Things not yet read go in [`data/to-read.yaml`](data/to-read.yaml) (same format). The build checks it but doesn't publish it; once read, move the entry into `readings.yaml`.
 
